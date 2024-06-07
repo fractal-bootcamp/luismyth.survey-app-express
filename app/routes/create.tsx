@@ -19,7 +19,6 @@ export const action: ActionFunction = async ({ request }) => {
     }
   })
 
-  const surveysAfterAddition = await client.survey.findMany();
 
   return redirect(`/survey/1`)
 
