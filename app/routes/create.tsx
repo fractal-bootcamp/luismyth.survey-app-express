@@ -1,55 +1,100 @@
 
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunction, ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { Form, redirect, useActionData } from "@remix-run/react";
 import { json } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
+import client from "~/client";
 
 import { prismaDatabase } from "~/prismaDatabase";
 
-export const loader = async ({
-  params,
-}: LoaderFunctionArgs) => {
-  const surveyId = params.surveyId;
 
-  return json( {surveyId});
-  
+export const action: ActionFunction = async ({ request }) => {
+  const data = await request.formData();
+
+  console.log("request.formData:", request.formData)
+
+  await client.survey.create({
+    data: {
+      name: data.get("surveyName") || "default survey name",
+    }
+  })
+
+  const surveysAfterAddition = await client.survey.findMany();
+
+  return redirect(`/survey/1`)
+
+  // const formData = await request.formData();
+  // const survey = await createSurvey(formData);
+
+  // const newSurveyId = ?!?
+
+  // return redirect(`/survey/${client.survey.newSurveyId}`)
+
+
 }
 
-export async function action({request}:ActionFunctionArgs) {
-  const body = await request.formData();
-  const project = await createSurvey(body);
-  return redirect(`/survey/${survey.id}`)
+
+
+export default function CreateSurveyForm () {
+  const actionData = useActionData<typeof action>();
+
+  return (
+    <div>
+      <Form method = "post" action="/create">
   
-}
-
-async function getLoaderDataSurvey( surveyId: number ) {
-    const survey = await prismaDatabase.survey.findUnique({
-      where: {
-        id: surveyId
-      },
-      select: {
-        id: true,
-        name: true,
-        topic: true,
-      },
-    });
-    return survey
-  }
-
-  const Create = () => {
-    return (
-      <div>
-        <form method = "post" action="/hello">
+        <p>
           <label>
-            <input name="name" type="text" />
+            Name: {" "}
+            <input 
+              name="surveyName" 
+              type="text"
+              defaultValue={actionData?.values.name} 
+            />
           </label>
+        </p>
+
+        {actionData?.errors.name ? (
+          <p style = {{ color: "red "}}>
+            {actionData.errors.name}
+          </p>
+        ) : null }
+
+        <p>
           <label>
+            Description: {" "}
             <textarea name="description"></textarea>
           </label>
+        </p>
+        <p>
           <button type="submit">Create</button>
-        </form>
-      </div>
-    )
-  }
+        </p>
+      </Form>
+    </div>
+  )
+}
 
-  export default Create;
 
+
+
+// MAY NEED SOME INSPIRATION FROM THIS STILL
+// }
+// function createSurvey(formData: object) {
+  //   console.log(formData)
+  // }
+  
+
+// export const loader = async ({
+//   params,
+// }: LoaderFunctionArgs) => {
+//   const surveyId = params.surveyId;
+
+//   return json( {surveyId});
+//
+// export const action = async ({
+//   request,
+// }: ActionFunctionArgs) => {
+//   const formData = await request.formData();
+//   const survey = await createSurvey(formData);
+//   return redirect(`/survey/${survey.id}`)
+  
+// }

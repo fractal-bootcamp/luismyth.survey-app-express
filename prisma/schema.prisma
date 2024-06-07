@@ -26,7 +26,7 @@ model Survey {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  // Relationship info for Prisma client - NOT database columns
+  // relationships
   questions  Question[]
 
   @@map("survey")
@@ -40,10 +40,10 @@ model Question {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  // Columns that will be used to store Relationship key
+  // relational ids
   surveyId   Int
 
-  // Relationship info for Prisma client - NOT database columns
+  // relationships
   survey     Survey @relation(fields: [surveyId], references: [id])
   answers    Answer[]
 
