@@ -24,9 +24,13 @@ export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
   console.log("server side")
+
+  if (!params.surveyId) throw new Response(null, { status: 400, statusText: 'Survey id required' });
+
   console.log("params.surveyId:", params.surveyId)
+  const survey = await getLoaderData(params.surveyId)
   return json(
-    await getLoaderData(params.surveyId!)
+    survey
   )
 }
 

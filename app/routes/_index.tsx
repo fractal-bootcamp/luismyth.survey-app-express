@@ -27,7 +27,7 @@ function ListSurveys() {
   const data = useLoaderData<typeof loader>();
   return(
     <ul>
-      {data.map((survey) => (
+      {data.toReversed().map((survey) => (
           <li key={survey.id}>
             <Link to={`/survey/${survey.id}`}>
               {survey.name}

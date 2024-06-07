@@ -36,7 +36,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function CreateSurveyForm () {
   const actionData = useActionData<typeof action>();
-
   return (
     <div>
       <Form method = "post" action="/create">
@@ -47,7 +46,7 @@ export default function CreateSurveyForm () {
             <input 
               name="surveyName" 
               type="text"
-              defaultValue={actionData?.values.name} 
+              placeholder="Enter your survey name here"
             />
           </label>
         </p>
