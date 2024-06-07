@@ -5,36 +5,42 @@ import { useLoaderData } from "@remix-run/react";
 import { prismaDatabase } from "~/prismaDatabase.server";
 
 
+async function getLoaderData(surveyId: string) {
+    const surveyIdInt: number = +surveyId
+    const survey = await prismaDatabase.survey.findUnique({
+        where: {
+            id: surveyIdInt
+        },
+        select: {
+            id: true,
+            name: true,
+        },
+        },
+    );
+    return survey
+}
+
 export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
   console.log("server side")
+  console.log("params.surveyId:", params.surveyId)
   return json(
-    await prismaDatabase.survey.findMany()
+    await getLoaderData(params.surveyId!)
   )
 }
 
-export function ListSurveys() {
-  const data = useLoaderData<typeof loader>();
-  return(
-    <ul>
-      {data.map((survey) => (
-        <li key={survey.id}>{survey.name}</li>
-      ))}
-    </ul>
-  )
+function SurveyInfoDisplay() {
+    const survey = useLoaderData<typeof loader>();
+    console.log(survey)
+    return(
+        <div>
+            Welcome to survey info for Survey number {survey!.id}
+            <br />
+            {survey!.name}
+        </div>
+    )
 }
-
-export function HowManySurveys() {
-  const surveys = useLoaderData<typeof loader>();
-  return (
-    <div>
-      <p>The Loader has found {surveys.length} surveys are recorded</p>
-      <ListSurveys />
-    </div>
-  )
-}
-
 
 
 export default function Index() {
@@ -42,11 +48,11 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <div>
-
-      <h1>Welcome to Remix</h1>
-      <Link to="/create" >Create</Link>
+        <SurveyInfoDisplay />
       </div>
-      <HowManySurveys />
+      <div>
+          <Link to="/" >See all</Link>
+      </div>
     </div>
   );
 }
