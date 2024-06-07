@@ -1,15 +1,14 @@
-import { PrismaClient, SurveyTopic } from "@prisma/client";
-
-const prismaDatabase = new PrismaClient()
-
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/react";
+import { Link, json } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
+
+import { prismaDatabase } from "~/prismaDatabase.server";
+
 
 export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
-  // console.log("LOADER CALLED") - for some reason console.log doesn't seem to work in this context :(
+  console.log("server side")
   return json(
     await prismaDatabase.survey.findMany()
   )
@@ -39,9 +38,14 @@ export function HowManySurveys() {
 
 
 export default function Index() {
+  console.log("client side")
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+      <div>
+
       <h1>Welcome to Remix</h1>
+      <Link to="/create" >Create</Link>
+      </div>
       <HowManySurveys />
     </div>
   );
