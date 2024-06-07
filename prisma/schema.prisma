@@ -18,4 +18,54 @@ datasource db {
 model Survey {
   id         Int       @id @default(autoincrement())
   name       String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  // Relationship info for Prisma client - NOT database columns
+  questions  Question[]
+
+  @@map("survey")
 }
+
+
+model Question {
+  id         Int     @id @default(autoincrement())
+  name       String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  // Columns that will be used to store Relationship key
+  surveyId   Int
+
+  // Relationship info for Prisma client - NOT database columns
+  survey     Survey @relation(fields: [surveyId], references: [id])
+  answers    Answer[]
+
+  @@map("question")
+}
+
+
+
+model Answer {
+  id         Int     @id @default(autoincrement())
+  name       String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  // Columns that will be used to store Relationship key
+  questionId Int
+
+  // Relationship info for Prisma client - NOT database columns
+  question   Question @relation(fields: [questionId], references: [id])
+
+  @@map("answer")
+}
+
+
+
+// Surveys
+// Questions -> Surveys
+// Answers -> Questions
