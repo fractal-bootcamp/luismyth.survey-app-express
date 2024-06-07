@@ -14,13 +14,11 @@ export const loader = async ({
   )
 }
 
-
 function HowManySurveys() {
   const surveys = useLoaderData<typeof loader>();
   return (
     <div>
       <p>The Loader has found {surveys.length} surveys are recorded</p>
-      <ListSurveys />
     </div>
   )
 }
@@ -30,11 +28,11 @@ function ListSurveys() {
   return(
     <ul>
       {data.map((survey) => (
-        <div>
-          <Link to={`/survey/${survey.id}`}>
-          <li key={survey.id}>{survey.name}</li>
-          </Link>
-        </div>
+          <li key={survey.id}>
+            <Link to={`/survey/${survey.id}`}>
+              {survey.name}
+            </Link>
+          </li>
       ))}
     </ul>
   )
@@ -50,10 +48,11 @@ export default function Index() {
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <div>
 
-      <h1>Welcome to Remix</h1>
+      <h1>Welcome to Survey Gibbon</h1>
       <Link to="/create" >Create</Link>
       </div>
       <HowManySurveys />
+      <ListSurveys />
     </div>
   );
 }

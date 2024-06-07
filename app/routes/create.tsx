@@ -5,10 +5,6 @@ import { useLoaderData } from "@remix-run/react";
 
 import { prismaDatabase } from "~/prismaDatabase.server";
 
-// export const loader = async(surveyId: LoaderFunctionArgs) => {
-//   return json(await getLoaderDataSurvey(surveyId))
-// }
-
 export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
@@ -34,9 +30,19 @@ async function getLoaderDataSurvey( surveyId: number ) {
   }
 
   const Create = () => {
-    return <div>
-      hi
-    </div>
+    return (
+      <div>
+        <form method = "post" action="/hello">
+          <label>
+            <input name="name" type="text" />
+          </label>
+          <label>
+            <textarea name="description"></textarea>
+          </label>
+          <button type="submit">Create</button>
+        </form>
+      </div>
+    )
   }
 
   export default Create;
