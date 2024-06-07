@@ -14,18 +14,8 @@ export const loader = async ({
   )
 }
 
-export function ListSurveys() {
-  const data = useLoaderData<typeof loader>();
-  return(
-    <ul>
-      {data.map((survey) => (
-        <li key={survey.id}>{survey.name}</li>
-      ))}
-    </ul>
-  )
-}
 
-export function HowManySurveys() {
+function HowManySurveys() {
   const surveys = useLoaderData<typeof loader>();
   return (
     <div>
@@ -34,6 +24,23 @@ export function HowManySurveys() {
     </div>
   )
 }
+
+function ListSurveys() {
+  const data = useLoaderData<typeof loader>();
+  return(
+    <ul>
+      {data.map((survey) => (
+        <div>
+          <Link to={`/survey/${survey.id}`}>
+          <li key={survey.id}>{survey.name}</li>
+          </Link>
+        </div>
+      ))}
+    </ul>
+  )
+}
+
+
 
 
 
