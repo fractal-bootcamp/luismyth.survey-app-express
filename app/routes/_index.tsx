@@ -1,23 +1,20 @@
-import { PrismaClient } from "@prisma/client";
-
-const prismaDatabase = new PrismaClient()
-
-console.log("feailkmcewio")
-
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/react";
+import { Link, json } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
+
+import { prismaDatabase } from "~/prismaDatabase";
+
 
 export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
-  // console.log("LOADER CALLED") - for some reason console.log doesn't seem to work in this context :(
+  console.log("server side")
   return json(
     await prismaDatabase.survey.findMany()
   )
 }
 
-export function HowManySurveys() {
+function HowManySurveys() {
   const surveys = useLoaderData<typeof loader>();
   return (
     <div>
@@ -26,12 +23,36 @@ export function HowManySurveys() {
   )
 }
 
+function ListSurveys() {
+  const data = useLoaderData<typeof loader>();
+  return(
+    <ul>
+      {data.map((survey) => (
+          <li key={survey.id}>
+            <Link to={`/survey/${survey.id}`}>
+              {survey.name}
+            </Link>
+          </li>
+      ))}
+    </ul>
+  )
+}
+
+
+
+
 
 export default function Index() {
+  console.log("client side")
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
+      <div>
+
+      <h1>Welcome to Survey Gibbon</h1>
+      <Link to="/create" >Create</Link>
+      </div>
       <HowManySurveys />
+      <ListSurveys />
     </div>
   );
 }
