@@ -1,3 +1,42 @@
+import { PrismaClient } from "@prisma/client";
+
+const prismaDatabase = new PrismaClient()
+
+console.log("feailkmcewio")
+
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
+
+export const loader = async ({
+  params,
+}: LoaderFunctionArgs) => {
+  // console.log("LOADER CALLED") - for some reason console.log doesn't seem to work in this context :(
+  return json(
+    await prismaDatabase.survey.findMany()
+  )
+}
+
+export function HowManySurveys() {
+  const surveys = useLoaderData<typeof loader>();
+  return (
+    <div>
+      <p>The Loader has found {surveys.length} surveys are recorded</p>
+    </div>
+  )
+}
+
+
+export default function Index() {
+  return (
+    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+      <h1>Welcome to Remix</h1>
+      <HowManySurveys />
+    </div>
+  );
+}
+
+
 // import type { ActionFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
 
 // export const meta: MetaFunction = () => {
@@ -41,36 +80,3 @@
 
 
 // }
-
-export default function Index() {
-  return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/start/quickstart"
-            rel="noreferrer"
-          >
-            5m Quick Start
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/start/tutorial"
-            rel="noreferrer"
-          >
-            30m Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
-  );
-}
