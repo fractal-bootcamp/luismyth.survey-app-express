@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, SurveyTopic } from "@prisma/client";
 
 const prismaDatabase = new PrismaClient()
-
-console.log("feailkmcewio")
 
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/react";
@@ -17,14 +15,27 @@ export const loader = async ({
   )
 }
 
+export function ListSurveys() {
+  const data = useLoaderData<typeof loader>();
+  return(
+    <ul>
+      {data.map((survey) => (
+        <li key={survey.id}>{survey.name}</li>
+      ))}
+    </ul>
+  )
+}
+
 export function HowManySurveys() {
   const surveys = useLoaderData<typeof loader>();
   return (
     <div>
       <p>The Loader has found {surveys.length} surveys are recorded</p>
+      <ListSurveys />
     </div>
   )
 }
+
 
 
 export default function Index() {
