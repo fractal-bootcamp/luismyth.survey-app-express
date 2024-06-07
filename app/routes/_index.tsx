@@ -11,7 +11,7 @@ import { useLoaderData } from "@remix-run/react";
 export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
-  console.log("LOADER CALLED")
+  // console.log("LOADER CALLED") - for some reason console.log doesn't seem to work in this context :(
   return json(
     await prismaDatabase.survey.findMany()
   )
