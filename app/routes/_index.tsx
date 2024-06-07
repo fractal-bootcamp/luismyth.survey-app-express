@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Link, json } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 
-import { prismaDatabase } from "~/prismaDatabase.server";
+import { prismaDatabase } from "~/prismaDatabase";
 
 
 export const loader = async ({

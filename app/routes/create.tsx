@@ -1,9 +1,9 @@
 
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 
-import { prismaDatabase } from "~/prismaDatabase.server";
+import { prismaDatabase } from "~/prismaDatabase";
 
 export const loader = async ({
   params,
@@ -12,7 +12,13 @@ export const loader = async ({
 
   return json( {surveyId});
   
+}
 
+export async function action({request}:ActionFunctionArgs) {
+  const body = await request.formData();
+  const project = await createSurvey(body);
+  return redirect(`/survey/${survey.id}`)
+  
 }
 
 async function getLoaderDataSurvey( surveyId: number ) {
