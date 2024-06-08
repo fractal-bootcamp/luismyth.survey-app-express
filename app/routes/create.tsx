@@ -13,11 +13,14 @@ export const action: ActionFunction = async ({ request }) => {
 
   console.log("request.formData:", request.formData)
 
-  await client.survey.create({
+  const testvariable = await client.survey.create({ /// this function will return the doc item that is created
     data: {
-      name: data.get("surveyName") || "default survey name",
+      name: data.get("surveyName")?.toString() || "default survey name",
+      // name squiggly line if you don't have toString...because it otherwise returns a form data entry value type (specific to prisma)
     }
   })
+
+  console.log(testvariable)
 
 
   return redirect(`/survey/1`)
