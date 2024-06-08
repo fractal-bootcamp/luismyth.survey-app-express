@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Link, json } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
+import { useEffect, useState } from "react";
 
 import { prismaDatabase } from "~/prismaDatabase";
 
@@ -41,10 +42,36 @@ function ListSurveys() {
 }
 
 
+export const getSurveys = async () => {
+  const data = await fetch ("http://localhost:4000/", {mode: "no-cors"}) // cross-resource origin sharing
+  // "when I'm a website, I should only be able to interact with other websites explicitly"
+  // CORS is a webscanner that prevents you from interacting with other websites
+  // in this case, it might be upset that I'm interacting with different websites
 
+  const surveys = data.json()
+
+  return { surveys: surveys }
+}
 
 
 export default function Index() {
+  const [surveys, setSurveys] = useState([])
+
+  useEffect(
+    () => {
+      getSurveys().then(async (data) => {  /// .then function here is the same as doing an await
+        const surveys = data.surveys
+
+        setSurveys(surveys)
+      })
+    }
+
+
+  )
+
+  // useEffect(()=>
+  // {console.log(data),})
+
   console.log("client side")
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
