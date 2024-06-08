@@ -2,14 +2,11 @@ import express, { RequestHandler } from "express";
 import client from "~/client";
 import { expressPort } from "~/routes/_index";
 
+console.log("####################### \n SERVER RESTARTED \n ####################### ")
+
 const app = express();
 
-// send a request request.body = '{"name": "John"}' -> {name: "John"}
-
-//bun.sh
 app.use(express.json());
-
-// cors
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,9 +22,9 @@ app.get("/", async (req, res) => {
 });
 
 
+// send a request request.body = '{"name": "John"}' -> {name: "John"}
 
-app.post ("/insert", async(req, res) =>{
-    // I believe this this will be called by hitting localhost:4000/insert
+app.post("/insert", async (req, res) => {
     const body = {
         name: req.body.name
     }
@@ -40,38 +37,15 @@ app.post ("/insert", async(req, res) =>{
         }
         })
 
-    // if (!body.name) {
-    //     return res.status(400).json({
-    //         error: "survey name missing"
-    //     })
-    // }
+    if (!body.name) {
+        return res.status(400).json({
+            error: "survey name missing"
+        })
+    }
 
-    console.log("The request to POST an entry has been received, with req as:", req)
-
-    res.json("hi")
-
-    return(null)
+    res.send(req.body)
+    // this has similarities with 'return'...so a return after this would not be called
 })
-
-
-
-
-// FOR REFERENCE - THIS WAS HOW I GOT IT WORKING WITH ACTIONFUNCTION
-
-// export const action: ActionFunction = async ({ request }) => {
-//   const data = await request.formData();
-
-//   console.log("request.formData:", request.formData)
-
-//   const confirmedNewSurvey = await client.survey.create({ /// this function will return the doc item that is created
-//     data: {
-//       name: data.get("surveyName")?.toString() || "default survey name",
-//       // name squiggly line if you don't have toString...because it otherwise returns a form data entry value type (specific to prisma)
-//     }
-//   })
-
-//   return redirect(`/survey/${confirmedNewSurvey.id}`)
-// }
 
 
 // nothing happens until you set it to listen

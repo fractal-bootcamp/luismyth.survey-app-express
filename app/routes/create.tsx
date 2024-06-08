@@ -2,33 +2,35 @@ import { Link } from "@remix-run/react";
 import { expressPort } from "./_index";
 import { useState } from "react";
 
-export const postSurvey = async ({ name }: NewSurvey) => {
-  const response = await fetch (`http://localhost:${expressPort}/insert`, {
+export const postSurvey = async ({ name, question1 }: NewSurvey) => {
+  const response = await fetch(`http://localhost:${expressPort}/insert`, {
     method: "POST",
-    mode: "no-cors",
-    cache: "no-cache",
-    body: JSON.stringify(name)
-    }
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ "name": name })
+  }
   )
-// full "response" is a massive sprawling object, .json() gives us the most salient part of it somehow
-const responseJson = await response.json()
-console.log("postSurvey function called. Response received was:", response)
+  // full "response" is a massive sprawling object, .json() gives us the most salient part of it somehow
+  const responseJson = await response.json()
+  console.log("postSurvey function called. Response received was:", response)
 }
 
 type NewSurvey = {
   name: string;
+  question1?: string;
 }
 
-export default function CreateSurveyForm () {
+export default function CreateSurveyForm() {
   const [submittedValue, setSubmittedValue] = useState("")
   console.log("submittedValue is:", submittedValue)
   return (
     <div>
-      <input type="text" value = {submittedValue} onChange={(e) => {setSubmittedValue(e.target.value)}}/>
+      <input type="text" value={submittedValue} onChange={(e) => { setSubmittedValue(e.target.value) }} />
       <button type="submit" onClick={
-        ()=>{
+        () => {
           console.log("Submit button has been clicked, with value:", submittedValue);
-          postSurvey({name: submittedValue})
+          postSurvey({ name: submittedValue })
         }
       }
       >
@@ -36,7 +38,7 @@ export default function CreateSurveyForm () {
       </button>
       <br />
       <br />
-      <Link to = "/"> Back to all surveys </Link>
+      <Link to="/"> Back to all surveys </Link>
 
     </div>
   )
