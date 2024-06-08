@@ -54,11 +54,31 @@ export const getSurveys = async () => {
 }
 
 
+type Surveys = {
+  name: string;
+  id: number;
+}[]
+
 export default function Index() {
-  const [surveys, setSurveys] = useState([])
+  const [surveys, setSurveys] = useState<Surveys>([])
 
   useEffect(
     () => {
+
+      const loadData = async () => {
+        const data = await getSurveys();
+
+        setSurveys(data.surveys);
+
+      }
+
+      setSurveys(data.surveys)
+
+      /// THIS NEEDS FIXING
+
+
+
+
       getSurveys().then(async (data) => {  /// .then function here is the same as doing an await
         const surveys = data.surveys
 
