@@ -24,11 +24,24 @@ app.get("/", async (req, res) => {
     res.json({ surveys });
 });
 
+
+
+
+
+
 app.post ("/insert", async(req, res) =>{
     // I believe this this will be called by hitting localhost:4000/insert
     const body = {
         name: req.body.name
     }
+
+    await client.survey.create({ /// this function will return the doc item that is created
+        data: {
+            name: body.name
+            // name: data.get("surveyName")?.toString() || "default survey name",
+            // name squiggly line if you don't have toString...because it otherwise returns a form data entry value type (specific to prisma)
+        }
+        })
 
     // if (!body.name) {
     //     return res.status(400).json({
@@ -42,6 +55,27 @@ app.post ("/insert", async(req, res) =>{
 
     return(null)
 })
+
+
+
+
+// FOR REFERENCE - THIS WAS HOW I GOT IT WORKING WITH ACTIONFUNCTION
+
+// export const action: ActionFunction = async ({ request }) => {
+//   const data = await request.formData();
+
+//   console.log("request.formData:", request.formData)
+
+//   const confirmedNewSurvey = await client.survey.create({ /// this function will return the doc item that is created
+//     data: {
+//       name: data.get("surveyName")?.toString() || "default survey name",
+//       // name squiggly line if you don't have toString...because it otherwise returns a form data entry value type (specific to prisma)
+//     }
+//   })
+
+//   return redirect(`/survey/${confirmedNewSurvey.id}`)
+// }
+
 
 
 
