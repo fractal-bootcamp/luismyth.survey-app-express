@@ -50,7 +50,7 @@ export const getSurveys = async () => {
 
   const surveys = data.json()
 
-  return { surveys: surveys }
+  return surveys
 }
 
 
@@ -67,27 +67,18 @@ export default function Index() {
 
       const loadData = async () => {
         const data = await getSurveys();
-
         setSurveys(data.surveys);
+      };
+      loadData()
 
-      }
-
-      setSurveys(data.surveys)
-
-      /// THIS NEEDS FIXING
-
-
-
-
-      getSurveys().then(async (data) => {  /// .then function here is the same as doing an await
-        const surveys = data.surveys
-
-        setSurveys(surveys)
-      })
-    }
+      /// ORIGINAL METHOD
+      // getSurveys().then(async (data) => {  /// .then function here is the same as doing an await
+      //   const surveys = data.surveys
+      //   setSurveys(surveys)
+      }, [])
 
 
-  )
+  
 
   // useEffect(()=>
   // {console.log(data),})
