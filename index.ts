@@ -9,7 +9,7 @@ app.use(express.json());
 
 const rootRouteHandler: RequestHandler = (req, res) => {
 
-    const surveys = await client.survey.getMany()
+    // const surveys = await client.survey.getMany()
 
     res.json({message:"Hello World"}); // if you have a response, return a json object
 }
