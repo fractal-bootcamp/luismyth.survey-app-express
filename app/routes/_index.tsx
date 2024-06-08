@@ -6,10 +6,10 @@ import { useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { prismaDatabase } from "~/prismaDatabase";
 
-
+export const expressPort = 4001
 
 export const getSurveys = async () => {
-  const data = await fetch ("http://localhost:4000/",
+  const data = await fetch (`http://localhost:${expressPort}/`,
     
     // {mode: "no-cors"}
 
