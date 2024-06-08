@@ -1,63 +1,45 @@
+import { Link } from "@remix-run/react";
+import { expressPort } from "./_index";
+import { useState } from "react";
 
-import type { ActionFunction, ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, redirect, useActionData } from "@remix-run/react";
-import { json } from "@remix-run/react";
-import { useLoaderData } from "@remix-run/react";
-import client from "~/client";
-
-import { prismaDatabase } from "~/prismaDatabase";
-
-
-export const action: ActionFunction = async ({ request }) => {
-  const data = await request.formData();
-
-  console.log("request.formData:", request.formData)
-
-  const confirmedNewSurvey = await client.survey.create({ /// this function will return the doc item that is created
-    data: {
-      name: data.get("surveyName")?.toString() || "default survey name",
-      // name squiggly line if you don't have toString...because it otherwise returns a form data entry value type (specific to prisma)
-    }
-  })
-
-  return redirect(`/survey/${confirmedNewSurvey.id}`)
+export const postSurvey = async ({ name, question1 }: NewSurvey) => {
+  const response = await fetch(`http://localhost:${expressPort}/insert`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ "name": name })
+  }
+  )
+  // full "response" is a massive sprawling object, .json() gives us the most salient part of it somehow
+  const responseJson = await response.json()
+  console.log("postSurvey function called. Response received was:", response)
 }
 
+type NewSurvey = {
+  name: string;
+  question1?: string;
+}
 
-
-export default function CreateSurveyForm () {
-  const actionData = useActionData<typeof action>();
+export default function CreateSurveyForm() {
+  const [submittedValue, setSubmittedValue] = useState("")
+  console.log("submittedValue is:", submittedValue)
   return (
     <div>
-      <Form method = "post" action="/create">
-  
-        <p>
-          <label>
-            Name: {" "}
-            <input 
-              name="surveyName" 
-              type="text"
-              placeholder="Enter your survey name here"
-            />
-          </label>
-        </p>
+      <input type="text" value={submittedValue} onChange={(e) => { setSubmittedValue(e.target.value) }} />
+      <button type="submit" onClick={
+        () => {
+          console.log("Submit button has been clicked, with value:", submittedValue);
+          postSurvey({ name: submittedValue })
+        }
+      }
+      >
+        Submit
+      </button>
+      <br />
+      <br />
+      <Link to="/"> Back to all surveys </Link>
 
-        {actionData?.errors.name ? (
-          <p style = {{ color: "red "}}>
-            {actionData.errors.name}
-          </p>
-        ) : null }
-
-        <p>
-          <label>
-            Description: {" "}
-            <textarea name="description"></textarea>
-          </label>
-        </p>
-        <p>
-          <button type="submit">Create</button>
-        </p>
-      </Form>
     </div>
   )
 }

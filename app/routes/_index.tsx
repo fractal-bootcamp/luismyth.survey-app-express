@@ -1,15 +1,10 @@
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Link, json } from "@remix-run/react";
-import { useLoaderData } from "@remix-run/react";
-
-
 import { useEffect, useState } from "react";
-import { prismaDatabase } from "~/prismaDatabase";
 
-
+export const expressPort = 4001
 
 export const getSurveys = async () => {
-  const data = await fetch ("http://localhost:4000/",
+  const data = await fetch (`http://localhost:${expressPort}/`,
     
     // {mode: "no-cors"}
 
@@ -26,14 +21,12 @@ export const getSurveys = async () => {
   return surveys
 }
 
-
 type Surveys = {
   name: string;
   id: number;
 }[]
 
-
-function HowManySurveys({ surveysLength }: any ) {
+function HowManySurveys( { surveysLength } : {surveysLength: number } ) {
   return (
     <div>
       <p>The Loader has found {surveysLength} surveys are recorded</p>

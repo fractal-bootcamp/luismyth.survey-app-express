@@ -1,14 +1,12 @@
 import express, { RequestHandler } from "express";
 import client from "~/client";
+import { expressPort } from "~/routes/_index";
+
+console.log("####################### \n SERVER RESTARTED \n ####################### ")
 
 const app = express();
 
-// send a request request.body = '{"name": "John"}' -> {name: "John"}
-
-//bun.sh
 app.use(express.json());
-
-// cors
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -23,8 +21,35 @@ app.get("/", async (req, res) => {
     res.json({ surveys });
 });
 
+
+// send a request request.body = '{"name": "John"}' -> {name: "John"}
+
+app.post("/insert", async (req, res) => {
+    const body = {
+        name: req.body.name
+    }
+
+    await client.survey.create({ /// this function will return the doc item that is created
+        data: {
+            name: body.name
+            // name: data.get("surveyName")?.toString() || "default survey name",
+            // name squiggly line if you don't have toString...because it otherwise returns a form data entry value type (specific to prisma)
+        }
+        })
+
+    if (!body.name) {
+        return res.status(400).json({
+            error: "survey name missing"
+        })
+    }
+
+    res.send(req.body)
+    // this has similarities with 'return'...so a return after this would not be called
+})
+
+
 // nothing happens until you set it to listen
 
-app.listen(4000, () => {
-    console.log("Server is running on port 4000")
+app.listen(expressPort, () => {
+    console.log("Server is running on port", expressPort)
 })
