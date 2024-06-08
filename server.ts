@@ -26,9 +26,6 @@ app.get("/", async (req, res) => {
 
 
 
-
-
-
 app.post ("/insert", async(req, res) =>{
     // I believe this this will be called by hitting localhost:4000/insert
     const body = {
@@ -49,7 +46,7 @@ app.post ("/insert", async(req, res) =>{
     //     })
     // }
 
-    console.log("The request to POST an entry has been received")
+    console.log("The request to POST an entry has been received, with req as:", req)
 
     res.json("hi")
 
@@ -75,8 +72,6 @@ app.post ("/insert", async(req, res) =>{
 
 //   return redirect(`/survey/${confirmedNewSurvey.id}`)
 // }
-
-
 
 
 // nothing happens until you set it to listen

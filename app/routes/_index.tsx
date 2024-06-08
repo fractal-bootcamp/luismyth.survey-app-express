@@ -1,10 +1,5 @@
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Link, json } from "@remix-run/react";
-import { useLoaderData } from "@remix-run/react";
-
-
 import { useEffect, useState } from "react";
-import { prismaDatabase } from "~/prismaDatabase";
 
 export const expressPort = 4001
 
@@ -26,12 +21,10 @@ export const getSurveys = async () => {
   return surveys
 }
 
-
 type Surveys = {
   name: string;
   id: number;
 }[]
-
 
 function HowManySurveys( { surveysLength } : {surveysLength: number } ) {
   return (

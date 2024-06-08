@@ -1,50 +1,43 @@
-import { expressPort, getSurveys } from "./_index";
+import { Link } from "@remix-run/react";
+import { expressPort } from "./_index";
 import { useState } from "react";
-
-const surveys = await getSurveys();
-
-console.log("From create.tsx, surveys looks like...", surveys)
 
 export const postSurvey = async ({ name }: NewSurvey) => {
   const response = await fetch (`http://localhost:${expressPort}/insert`, {
     method: "POST",
-    mode: "cors",
+    mode: "no-cors",
     cache: "no-cache",
-  }
-)
-
-console.log("response AAA is:", response)
-console.log(typeof response);
-
+    body: JSON.stringify(name)
+    }
+  )
+// full "response" is a massive sprawling object, .json() gives us the most salient part of it somehow
 const responseJson = await response.json()
-;
-console.log("response JSON is:", responseJson);
-
+console.log("postSurvey function called. Response received was:", response)
 }
-
 
 type NewSurvey = {
   name: string;
 }
 
-
 export default function CreateSurveyForm () {
   const [submittedValue, setSubmittedValue] = useState("")
+  console.log("submittedValue is:", submittedValue)
   return (
     <div>
-    <input type="text" value = {submittedValue} onChange={(e) => {setSubmittedValue(e.target.value)}}/>
-
-    <button type="submit" onClick={
-      ()=>{
-        console.log("Submit button has been clicked, with value:", submittedValue);
-        postSurvey({name: submittedValue})
+      <input type="text" value = {submittedValue} onChange={(e) => {setSubmittedValue(e.target.value)}}/>
+      <button type="submit" onClick={
+        ()=>{
+          console.log("Submit button has been clicked, with value:", submittedValue);
+          postSurvey({name: submittedValue})
+        }
       }
-    }
-    >
-      Submit
-    </button>
+      >
+        Submit
+      </button>
+      <br />
+      <br />
+      <Link to = "/"> Back to all surveys </Link>
 
-      
     </div>
   )
 }
