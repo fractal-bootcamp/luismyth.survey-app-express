@@ -1,11 +1,47 @@
 
 import type { ActionFunction, ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, redirect, useActionData } from "@remix-run/react";
-import { json } from "@remix-run/react";
-import { useLoaderData } from "@remix-run/react";
 import client from "~/client";
 
-import { prismaDatabase } from "~/prismaDatabase";
+import { getSurveys } from "./_index";
+
+
+const surveys = await getSurveys();
+
+console.log("From create.tsx, surveys looks like...", surveys)
+
+
+
+export const postSurvey = async ({ name }: NewSurvey) => {
+  const data = await fetch ("http://localhost:4000/",
+    
+    // {mode: "no-cors"}
+
+  )
+  // cross-resource origin sharing
+  // "when I'm a website, I should only be able to interact with other websites explicitly"
+  // CORS is a webscanner that prevents you from interacting with other websites
+  // in this case, it might be upset that I'm interacting with different websites
+
+  const surveys = (await data.json()) as {
+    surveys: Surveys
+  }
+
+  return surveys
+}
+
+
+
+type NewSurvey = {
+  name: string;
+}
+
+
+
+
+
+
+
 
 
 export const action: ActionFunction = async ({ request }) => {

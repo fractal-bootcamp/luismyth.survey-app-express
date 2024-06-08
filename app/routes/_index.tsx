@@ -33,7 +33,7 @@ type Surveys = {
 }[]
 
 
-function HowManySurveys({ surveysLength }: any ) {
+function HowManySurveys( { surveysLength } : {surveysLength: number } ) {
   return (
     <div>
       <p>The Loader has found {surveysLength} surveys are recorded</p>
