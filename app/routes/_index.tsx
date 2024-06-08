@@ -33,6 +33,13 @@ type Surveys = {
 }[]
 
 
+function HowManySurveys({ surveysLength }: any ) {
+  return (
+    <div>
+      <p>The Loader has found {surveysLength} surveys are recorded</p>
+    </div>
+  )
+}
 
 export default function Index() {
   const [surveys, setSurveys] = useState<Surveys>([])
@@ -45,24 +52,17 @@ export default function Index() {
         setSurveys(data.surveys);
       };
       loadData()
+    }, [])
 
-      /// ORIGINAL METHOD
-      // getSurveys().then(async (data) => {  /// .then function here is the same as doing an await
-      //   const surveys = data.surveys
-      //   setSurveys(surveys)
-      }, [])
+  console.log("Client side is live.")
+  console.log("surveys is:", surveys)
 
-
-  
-
-  // useEffect(()=>
-  // {console.log(data),})
-
-  console.log("client side")
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Welcome to Survey Orangutan</h1>
-      {surveys.map((survey) => (
+      <HowManySurveys surveysLength = {surveys.length} />
+
+      {surveys.toReversed().map((survey) => (
         <div key = {survey.id}>
           <p> {survey.name}</p>
         </div>
@@ -119,14 +119,7 @@ export default function Index() {
 //   )
 // }
 
-// function HowManySurveys() {
-//   const surveys = useLoaderData<typeof loader>();
-//   return (
-//     <div>
-//       <p>The Loader has found {surveys.length} surveys are recorded</p>
-//     </div>
-//   )
-// }
+
 
 // function ListSurveys() {
 //   const data = useLoaderData<typeof loader>();
