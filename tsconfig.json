@@ -8,7 +8,8 @@
     "**/.client/**/*.tsx"
   ],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    // changed from     "lib": ["DOM", "DOM.Iterable", "ES2022"], to enable array.toReversed be accepted without error
     "types": ["@remix-run/node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
