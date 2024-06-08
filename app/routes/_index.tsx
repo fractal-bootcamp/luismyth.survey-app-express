@@ -25,6 +25,8 @@ function HowManySurveys() {
 
 function ListSurveys() {
   const data = useLoaderData<typeof loader>();
+  const x = [1, 2, 3];
+  console.log(data);
   return(
     <ul>
       {data.toReversed().map((survey) => (

@@ -13,26 +13,14 @@ export const action: ActionFunction = async ({ request }) => {
 
   console.log("request.formData:", request.formData)
 
-  const testvariable = await client.survey.create({ /// this function will return the doc item that is created
+  const confirmedNewSurvey = await client.survey.create({ /// this function will return the doc item that is created
     data: {
       name: data.get("surveyName")?.toString() || "default survey name",
       // name squiggly line if you don't have toString...because it otherwise returns a form data entry value type (specific to prisma)
     }
   })
 
-  console.log(testvariable)
-
-
-  return redirect(`/survey/1`)
-
-  // const formData = await request.formData();
-  // const survey = await createSurvey(formData);
-
-  // const newSurveyId = ?!?
-
-  // return redirect(`/survey/${client.survey.newSurveyId}`)
-
-
+  return redirect(`/survey/${confirmedNewSurvey.id}`)
 }
 
 
@@ -73,29 +61,3 @@ export default function CreateSurveyForm () {
     </div>
   )
 }
-
-
-
-
-// MAY NEED SOME INSPIRATION FROM THIS STILL
-// }
-// function createSurvey(formData: object) {
-  //   console.log(formData)
-  // }
-  
-
-// export const loader = async ({
-//   params,
-// }: LoaderFunctionArgs) => {
-//   const surveyId = params.surveyId;
-
-//   return json( {surveyId});
-//
-// export const action = async ({
-//   request,
-// }: ActionFunctionArgs) => {
-//   const formData = await request.formData();
-//   const survey = await createSurvey(formData);
-//   return redirect(`/survey/${survey.id}`)
-  
-// }
